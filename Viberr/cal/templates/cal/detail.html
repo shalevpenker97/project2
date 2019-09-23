@@ -1,0 +1,212 @@
+{% extends 'music/base.html' %}
+{% block body %}
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .div-cal{
+            border: solid #e1e1e1;
+            width: 110px;
+            height: 80px;
+            float: left;
+            border-radius: 5px;
+            font-weight: 900;
+            margin: 0;
+            padding: 0;
+        }
+        .bg-modal {
+            background-color: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+    	    height: 600px;
+	        width: 800px;
+	        background-color: white;
+	        text-align: center;
+	        padding: 20px;
+	        position: relative;
+	        border-radius: 4px;
+        }
+
+        .leftside, .rightside{
+            margin:10px;
+            width: 930px;
+        }
+
+        .leftside {
+
+            float: left;
+            /*height: 50vh;
+            width: 100%;*/
+        }
+        .rightside{
+            float: left;
+        }
+        .div-cal:hover {
+          border-radius: 5px;
+          background-color: #1abc9c;
+          color: #ecf0f1;
+        }
+        .bid-button {
+            background: url("/media/bid.png");
+            background-size: cover;
+            width: 40px;
+            height: 40px;
+            border: 0;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        window.onload=function() {
+            $('.btn.btn-info').click(function () {
+                 document.querySelector('.bg-modal').style.display = "flex";
+                 document.getElementById("image_of_spot").src = $(this).attr('spot_ad_image');
+                 document.getElementById("id_of_spot").innerHTML = $(this).attr('spot_spot_id');
+                 document.getElementById("id_of_spot").x_spot_id = $(this).attr('spot_spot_id');
+                 document.getElementById("id_of_spot").x_calender = $(this).attr('calender');
+            });
+            $('.btn.btn-success').click(function () {
+                console.log(document.getElementById("id_of_spot").x_spot_id)
+                console.log(document.getElementById("id_of_spot").x_calender)
+                console.log(document.getElementById("bid_image").x_image)
+                //document.getElementById("id_of_spot").innerHTML = $(this).attr('spot_spot_id');
+                var token = '{{csrf_token}}';
+                var Info  = {
+                    Calender: document.getElementById("id_of_spot").x_calender,
+                    spot_id: document.getElementById("id_of_spot").x_spot_id,
+                    Price: "Price",
+                    image: document.getElementById("bid_image").x_image,
+
+                }
+
+                $.ajax({
+                    headers: { "X-CSRFToken": token },
+                    type: "POST",
+                    url: "/cal/bid/",
+                    data: Info,
+                    dataType: 'json',
+                });
+                location.href = "/cal/detail";
+
+        //Need to send post request to backend with attributes Calender,spot_id and what image did you select in the choose image option
+
+          //  This need to be in the backend  to update the spot_id:
+
+           //Calender_spot.objects.filter(My_Calender="1",spot_id="08-09:05-09").update(ad_image='/media/s-l500_5.jpg')
+
+            });
+            /*
+            $(document).on('click', 'button.btn btn-info', function () {
+                document.querySelector('.bg-modal').style.display = "flex";
+                // your function here
+            });*/
+            document.querySelector('.close').addEventListener("click", function() {
+	            document.querySelector('.bg-modal').style.display = "none";
+            });
+            //alert("Hello! I am an alert box!!");
+            $("select").change(function () {
+            document.getElementById("bid_image").height="70";
+            document.getElementById("bid_image").width="100";
+            console.log($(this).children("option:selected").val());
+            document.getElementById("bid_image").src=$(this).children("option:selected").val();
+            document.getElementById("bid_image").x_image=$(this).children("option:selected").val();
+
+            })
+        }
+
+
+    </script>
+</head>
+<body>
+
+
+<!-- src="/media/s-l500_5.jpg"-->
+<!--Album.objects.filter(user=shalev)[0].album_title -->
+    <!-- Modal section -->
+    <div class="bg-modal">
+        <div id="modal" x_spot_id=""  x_calender="" class="modal-content">
+
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <label class="control-label col-sm-2">Current image</label>
+            <div>
+                {{ user.username }}
+                <img id="image_of_spot" src="" class="img-responsive" width="300" height="300">
+            </div>
+            <br>
+            <label class="control-label col-sm-2">Current spot id</label>
+            <div id="id_of_spot">
+                test_image
+            </div>
+            <br><br><br>
+            <img id="bid_image" x_image="" src="">
+            <label class="control-label col-sm-2">Current Bid image</label>
+            <br><br><br>
+
+            <select>
+                {% for item in User_Albums %}
+                    <option value="{{ item.album_logo.url }}">{{ item.album_title }}</option>
+                {% endfor %}
+            </select>
+            <label class="control-label col-sm-2">Choose image</label>
+            <br><br>
+                {% csrf_token %}
+                <button type="button" spot_ad_image="" token="{% csrf_token %}" class="btn btn-success">Bid</button>
+
+
+        </div>
+    </div>
+
+    <form>
+        <center><h1>{{ Calender.website_name }} ----- {{ Calender.website_placement }}</h1></center>
+    </form>
+    <div display="flex">
+    <div class="leftside" >
+        <form>
+            {% for key, value in dict_days.items %}
+                <div class="div-cal">{{ key }}  {{ value }}</div>
+            {% endfor %}
+        </form>
+        <br><br><br><br><br><br>
+
+        {% for item in calender_final_slots %}
+
+        {% endfor %}
+
+        {% for hour in calender_final_slots %}
+            <form>
+                {% for slot in hour %}
+                    <div class="div-cal">
+                        <div>{{ slot.status}}</div>
+
+                        <div>
+                        <!-- <button type="button" class="bid-button"></button>-->
+                        <button type="button" class="btn btn-info" calender="{{ Calender.id }}" spot_ad_image="{{ slot.ad_image }}" spot_spot_id ="{{ slot.spot_id }}" data-arg2="{{ slot.status }}">Info</button>
+
+                        <!-- <button type="button" class="bid-button" calender="{{ Calender.id }}" spot_ad_image="{{ slot.ad_image }}" spot_spot_id ="{{ slot.spot_id }}" data-arg2="{{ slot.status }}"></button>-->
+                        </div>
+                    </div>
+                {% endfor %}
+            </form>
+            <br><br><br><br><br><br>
+        {% endfor %}
+    </div>
+    <div class="rightside">
+        <img  width="900" height="900" src={{ Calender_image }}>
+
+
+    </div>
+    </div>
+</body>
+
+{% endblock %}

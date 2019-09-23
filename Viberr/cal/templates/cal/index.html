@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        div {
+        display: block;
+        float: left;
+
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+    <form>
+    {{ title }}
+    {{ year }}
+    {{ month }}
+    </form>
+    <form>
+        <table width="50" border="1">
+            <tr>
+                <th>Time</th>
+                <th>Sunday</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+            </tr>
+            {% for x in hours%}
+            <tr>
+                <td>{{ x }}</td>
+                <td>#capture by someone?</td>
+                <td>50</td>
+            </tr>
+
+            {% endfor %}
+            <tr>
+                <td>Eve</td>
+                <td>Jackson</td>
+                <td>94</td>
+            </tr>
+        </table>
+    </form>
+
+    <form>
+    {% for x in hours%}
+        <div>{{x}}</div>
+
+    {% endfor %}
+    </form>
+</body>
+</html>

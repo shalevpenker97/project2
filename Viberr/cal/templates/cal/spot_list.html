@@ -1,0 +1,182 @@
+{% extends 'music/base.html' %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .column {
+            float: left;
+            width: 33.33%;
+        }
+        .colum-non {
+            float: left;
+            width: 33.33%;
+            display: block;
+        }
+        .spot{
+            height: 50px;
+
+        }
+        .spot-left{
+            width: 80%;
+        }
+        .spot-right{
+            width: 20%;
+        }
+        .spot-left,.spot-right{
+            border: black;
+            border-style: solid;
+            border-width: 1px;
+            float: left;
+            height: 100%;
+        }
+
+        .section-middle{
+        margin: 24px 0 0;
+        border-radius: 4px;
+        /* min-width: 512px; */
+        background: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 1px 2px 0 rgba(221,221,221,0.5);
+        }
+
+        .left {
+            float: left;
+            margin-left: 20px;
+        }
+        .right {
+            float: none;
+            left: 35%;
+            position: relative;
+            margin-top: 10px;
+
+        }
+        .spot-picture{
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 0 0 0;
+            display: inline-block;
+            right: 30%;
+        }
+        .spot-div {
+            border: white;
+            border-bottom: #999;
+            height: 230px;
+            border-style: solid;
+            border-width: 1px;
+            margin-left: 50px;
+            margin-right: 50px;
+        }
+
+        .price {
+            position: relative;
+            right: 160%;
+            top: 85px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<br><br><br><br>
+<div class="colum-non">1</div>
+
+
+<div class="column">
+    <center>
+        <section width="700px" class="section-middle">
+        <div>
+
+            <div class="left">
+                <button>left</button>
+            </div>
+
+            <div class="right">
+                <button>right</button>
+            </div>
+        </div>
+        <br>
+
+        <ul class="list-group">
+
+            <div class="spot-div">
+                <div class="spot-picture">
+                    <img src="/media/sport5-spot-2.png" width="200px" height="200px">
+
+                </div>
+
+                <div style="float: right;">
+                    <div class="price">
+                        <h3>ILS 7.05</h3>
+                    </div>
+
+                <ul>
+                    <li>0 bids</li>
+                    <li><span class="ITALIC">Price   : ILS 7.01</span></li>
+                    <li><span class="ITALIC">Website : ynet</span></li>
+                    <li><span class="ITALIC">Day   : 08/09</span></li>
+                    <li></li>
+                </ul>
+                </div>
+
+            </div>
+            <br>
+
+            {%  for spot in spot_list %}
+                <div class="spot-div">
+                <div class="spot-picture">
+                    <img src="/media/{{ spot.calender_image }}" width="200px" height="200px">
+
+                </div>
+
+                <div style="float: right;">
+                    <div class="price">
+                        <h3>ILS 7.05</h3>
+                    </div>
+
+                <ul>
+                    <li>0 bids</li>
+                    <li><span class="ITALIC">Price   : ILS 7.01</span></li>
+                    <li><span class="ITALIC">Website : ynet</span></li>
+                    <li><span class="ITALIC">Day   : 08/09</span></li>
+                    <li></li>
+                </ul>
+                </div>
+
+            </div>
+
+                <!--<div class="spot">
+                    <div class="spot-left">
+                     {{ spot.website_placement }}
+                    </div>
+                    <div class="spot-right">
+                        view spot
+                    </div>
+                </div>
+                {{  spot.calender_image}}-->
+            {%  endfor %}
+
+
+            <div class="spot">1</div>
+            <div class="spot">1</div>
+            <div class="spot">1</div>
+
+
+        </ul>
+        </section>
+    </center>
+
+
+</div>
+
+
+
+<div class="colum-non"></div>
+
+
+</body>
+</html>
+
+{% endblock %}

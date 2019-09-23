@@ -1,0 +1,420 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111">
+<title>CodePen - Full calendar based reservation system</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.css">
+
+    <!--  jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+<!-- Bootstrap Date-Picker Plugin -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<style>
+    @font-face {
+  font-family: "Avenir";
+  src: local("Avenir"), url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/273445/Avenir.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+html {
+  box-sizing: border-box;
+  min-width: 320px;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+img {
+  vertical-align: middle;
+  max-width: 100%;
+}
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style-type: none;
+}
+ul,
+ol {
+  list-style-position: inside;
+}
+textarea {
+  max-width: 100%;
+}
+var {
+  font-style: normal;
+}
+h2 {
+  font-weight: 100;
+}
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-center {
+  text-align: center;
+}
+.text-primary {
+  color: #00a86b;
+}
+.text-muted {
+  color: #777;
+}
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-left: transparent 4px solid;
+  border-right: transparent 4px solid;
+}
+.angle {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  vertical-align: middle;
+  border-width: 1px 1px 0 0;
+  border-style: solid;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+.angle-down {
+  transition: 0.3s all ease;
+  -webkit-transform: rotate(135deg) translate(0, 0.176775em);
+          transform: rotate(135deg) translate(0, 0.176775em);
+}
+html {
+  font: 62.5%/1.5 Avenir, Helvetica Neue, Hiragino Sans GB, Microsoft Yahei, sans-serif;
+  color: #2a2a21;
+}
+body {
+  font-size: 1.6rem;
+}
+.heighter {
+  line-height: 1.8;
+}
+.table {
+  width: 100%;
+  table-layout: fixed;
+}
+.container-sm {
+  max-width: 768px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.demo-row {
+  padding: 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+  border-bottom: 1px dashed #ccc;
+}
+.list-unordered {
+  list-style-type: disc;
+}
+#page {
+  max-width: 960px;
+  padding: 0 15px;
+  margin: 40px auto;
+}
+@media (max-height: 790px) {
+  #page {
+    margin-top: 0;
+  }
+}
+.page-header h1 {
+  text-align: center;
+  font-weight: 100;
+}
+.input,
+select {
+  padding: 2px 5px;
+}
+.btn {
+  padding: 0.2em 0.8em;
+  border-radius: 4px;
+  border: 1px solid #bcbcbc;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  background-image: linear-gradient(180deg, #ffffff 0%, #efefef 60%, #e1dfe2 100%);
+  background-repeat: no-repeat;
+}
+.bubble {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  background: #fff;
+  padding: 15px;
+  width: 420px;
+  z-index: 99;
+  position: absolute;
+}
+.bubble .close {
+  position: absolute;
+  font-size: 24px;
+  line-height: 1;
+  padding: 0 5px;
+  right: 5px;
+  top: 5px;
+}
+.bubble {
+  border: 1px solid #ccc;
+}
+.bubble .arrow,
+.bubble .arrow:after {
+  position: absolute;
+  height: 0;
+  width: 0;
+  font-size: 0;
+  border-left: transparent 10px solid;
+  border-right: transparent 10px solid;
+}
+.bubble-top .arrow,
+.bubble-bottom .arrow {
+  left: 50%;
+  margin-left: -10px;
+}
+.bubble-top .arrow:after,
+.bubble-bottom .arrow:after {
+  content: '';
+  left: -10px;
+}
+.bubble-top .arrow {
+  border-top: #ccc 10px solid;
+  top: 100%;
+}
+.bubble-top .arrow:after {
+  border-top: #FFF 10px solid;
+  bottom: 1px;
+}
+.bubble-bottom .arrow {
+  border-bottom: #ccc 10px solid;
+  bottom: 100%;
+}
+.bubble-bottom .arrow:after {
+  border-bottom: #FFF 10px solid;
+  top: 1px;
+}
+.form-group {
+  padding-bottom: 8px;
+}
+.form-group:before,
+.form-group:after {
+  content: " ";
+  display: table;
+}
+.form-group:after {
+  clear: both;
+}
+.form-group:before,
+.form-group:after {
+  content: " ";
+  display: table;
+}
+.form-group:after {
+  clear: both;
+}
+.form-group > label {
+  float: left;
+  width: 4em;
+  text-align: right;
+  padding-right: 5px;
+}
+.form-group > input,
+.form-group > .input-wrapper {
+  margin-left: 4em;
+  display: block;
+}
+.btn-delete {
+  margin-top: 5px;
+  display: none;
+}
+.btn-delete:hover {
+  text-decoration: underline;
+}
+.usage {
+  margin-top: 10px;
+}
+
+  </style>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body translate="no">
+<div id="page">
+<div class="page-header">
+<h1>Reservation System (<a class="text-primary" href="http://preview.uedsky.com/demo/reserving" target="_blank">interactive demo</a>)</h1>
+</div>
+<div id="calendar" class="fc fc-ltr fc-unthemed">
+    <div class="fc-toolbar">
+        <div class="fc-left">
+            <div class="fc-button-group">
+                <button type="button" class="fc-prev-button fc-button fc-state-default fc-corner-left">
+                    <span class="fc-icon fc-icon-left-single-arrow"></span>
+                </button>
+                <button type="button" class="fc-next-button fc-button fc-state-default fc-corner-right">
+                    <span class="fc-icon fc-icon-right-single-arrow"></span>
+                </button>
+            </div>
+            <button type="button" class="fc-today-button fc-button fc-state-default fc-corner-left fc-corner-right">today</button>
+        </div><div class="fc-right"><div class="fc-button-group"><button type="button" class="fc-agendaWeek-button fc-button fc-state-default fc-corner-left">week</button><button type="button" class="fc-agendaDay-button fc-button fc-state-default fc-corner-right fc-state-active">day</button></div></div><div class="fc-center"><h2>September 2, 2019</h2></div><div class="fc-clear"></div></div><div class="fc-view-container" style=""><div class="fc-view fc-agendaDay-view fc-agenda-view" style=""><table><thead class="fc-head"><tr><td class="fc-widget-header"><div class="fc-row fc-widget-header" style="border-right-width: 1px; margin-right: 14px;"><table><thead><tr><th class="fc-axis fc-widget-header" style="width:42px"></th><th class="fc-day-header fc-widget-header fc-mon">Monday</th></tr></thead></table></div></td></tr></thead><tbody class="fc-body"><tr><td class="fc-widget-content"><div class="fc-time-grid-container fc-scroller" style="height: 662px;"><div class="fc-time-grid"><div class="fc-bg"><table><tbody><tr><td class="fc-axis fc-widget-content" style="width:42px"></td><td class="fc-day fc-widget-content fc-mon fc-past" data-date="2019-09-02"></td></tr></tbody></table></div><div class="fc-slats"><table><tbody><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>12am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>1am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>2am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>3am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>4am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>5am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>6am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>7am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>8am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>9am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>10am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>11am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>12pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>1pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>2pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>3pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>4pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>5pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>6pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>7pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>8pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>9pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>10pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width:42px"><span>11pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width:42px"></td><td class="fc-widget-content"></td></tr></tbody></table></div><hr class="fc-divider fc-widget-header" style="display: none;"><div class="fc-bgevent-skeleton"><table><tbody><tr><td class="fc-axis" style="width:42px"></td><td><div class="fc-bgevent-container"><div class="fc-nonbusiness fc-bgevent" style="top: 0px; bottom: -449px;"></div><div class="fc-nonbusiness fc-bgevent" style="top: 899px; bottom: -1199px;"></div></div></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><tbody><tr><td class="fc-axis" style="width:42px"></td><td><div class="fc-event-container"></div></td></tr></tbody></table></div></div></div></td></tr></tbody></table></div></div></div>
+</div>
+
+<div class="bubble">
+<div class="arrow"></div>
+</div>
+
+
+
+
+<form action="https://formden.com/ajax/MlKtmY4x/" class="form-horizontal" method="post">
+     <div class="form-group ">
+      <label class="control-label col-sm-2 requiredField" for="date">
+       Date
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <div class="col-sm-10">
+       <div class="input-group">
+        <div class="input-group-addon">
+         <i class="fa fa-calendar">
+         </i>
+        </div>
+        <input class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" type="text">
+       </div>
+      </div>
+     </div>
+     <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-2">
+       <input name="_honey" style="display:none" type="text">
+       <button class="btn btn-primary " name="submit" type="submit">
+        Submit
+       </button>
+      </div>
+     </div>
+    </form>
+
+
+
+<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js"></script>
+<script src="//fullcalendar.io/js/fullcalendar-2.3.1/lang-all.js"></script>
+<script id="rendered-js">
+
+    $(function () {// document ready
+
+      var calendar = $('#calendar').fullCalendar({
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'agendaWeek,agendaDay' },
+
+        defaultView: 'agendaWeek',
+        defaultTimedEventDuration: '01:00',
+        allDaySlot: false,
+        scrollTime: '08:00',
+        businessHours: {
+          start: '9:00',
+          end: '18:00' },
+
+        lang: /^en-/.test(navigator.language) ? 'en' : 'zh-cn',
+        eventOverlap: function (stillEvent, movingEvent) {
+          return true;
+        },
+        events: [{
+          title: '技术部周例会',
+          start: '2015-05-22T15:00+08:00' },
+        {
+          title: '运营部',
+          start: '2015-05-22T12:00+08:00' }],
+
+        editable: true,
+        selectable: true,
+        selectHelper: true,
+        select: function (start, end) {
+          var duration = (end - start) / 1000;
+          if (duration == 1800) {
+            // set default duration to 1 hr.
+            end = start.add(30, 'mins');
+            return calendar.fullCalendar('select', start, end);
+          }
+          var title = prompt('Event Title:');
+          var eventData;
+          if (title && title.trim()) {
+            eventData = {
+              title: title,
+              start: start,
+              end: end };
+
+            calendar.fullCalendar('renderEvent', eventData);
+          }
+          calendar.fullCalendar('unselect');
+        },
+        eventRender: function (event, element) {
+          var start = moment(event.start).fromNow();
+          element.attr('title', start);
+        },
+        loading: function () {
+
+        } });
+
+
+    });
+          //# sourceURL=pen.js
+
+        $(document).ready(function(){
+      var date_input=$('input[name="date"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'mm/dd/yyyy',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date_input.datepicker(options);
+    })
+    </script>
+
+
+</body></html>
